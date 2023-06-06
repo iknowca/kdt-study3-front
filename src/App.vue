@@ -2,29 +2,45 @@
   <v-app>
     <v-app-bar
       app
-      color="primary"
+      color="dark"
       dark
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+        <div id="redcircle"></div>
+        <div id="yellowcircle"></div>
+        <div id="greencircle"></div>
+        <div id="spacer">  </div>
+        <router-link to="/" color="grey" id="current">
+          <div class="d-flex align-center">
 
+              <v-card-title id="title" class="black--text">
+                  kdt-study3
+              </v-card-title>
+
+          </div>
+        </router-link>
+        <div id="spacer">  </div>
+
+        <router-link to="/" color="grey">
+            <div class="d-flex align-center">
+
+                <v-card-title id="othertitle" class="black--text">
+                    kdt-study2
+                </v-card-title>
+
+            </div>
+        </router-link>
+        <div id="spacer">  </div>
+
+        <router-link to="/" color="grey">
+            <div class="d-flex align-center">
+
+                <v-card-title id="othertitle" class="black--text">
+                    kdt-study1
+                </v-card-title>
+
+            </div>
+        </router-link>
       <v-spacer></v-spacer>
 
       <v-btn
@@ -53,3 +69,49 @@ export default {
   }),
 };
 </script>
+<style>
+#redcircle {
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+#yellowcircle {
+    width: 10px;
+    height: 10px;
+    background-color: #FFC81E;
+    border-radius: 50%;
+    margin-right: 10px;
+
+}
+#greencircle {
+    width: 10px;
+    height: 10px;
+    background-color: #78E150;
+    border-radius: 50%;
+}
+div#spacer {
+    width: 20px;
+}
+
+#title {
+    background-color:  white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin-top: 30px;
+    padding-top: 0px;
+    padding-bottom: 30px;
+}
+
+#othertitle {
+    background-color:  white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+    padding-top: 10px;
+}
+a {
+    text-decoration: none;
+}
+</style>
