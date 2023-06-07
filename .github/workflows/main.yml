@@ -1,14 +1,14 @@
 name: Frontend CD
+
 on:
   push:
     branches: [main]
-    
-    
+   
 env:
-  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/kdt-study3-front
+  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/${{ secrets.DOCKER_PATH }}
   VERSION: ${{ github.sha }}
-  NAME: frontend-server
-  
+  NAME: ${{ secrets.DOCKER_PATH }}
+ 
 jobs:
   build:
     name: Build
@@ -16,11 +16,11 @@ jobs:
     steps:
       - name: Check out source code
         uses: actions/checkout@v2
-        
+       
       - name: Set up docker buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
-        
+       
       - name: Cache Docker Layers
         uses: actions/cache@v2
         with:
@@ -28,32 +28,35 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ env.VERSION }}
           restore-keys: |
             ${{ runner.os }}-buildx-
-            
-      - name: setup Node.js
+           
+      - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 18
-          
+          node-version: 18 
+         
       - name: Install Dependencies
         run: |
           pwd
           npm ci
-      - name: Create  .env.production for CD Deploy
+           
+      - name: Create .env.production for CD Deploy
         run: |
           pwd
-          echo "${{ secrets.CD_DEPLOY_CONFIG }}" > .env.production
+          echo "${{ secrets.CD_DEPLOY_CONFIG }}" > .env.production //이 내용을 저파일에 덮어씌우겠다.
           cat .env.production
-          
-      - name: Docker build $ push to prod
+         
+      ## docker build & push to production
+      - name: Docker build & push to prod
         run: |
           echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
           docker buildx create --name arm64builder --use
-          docker buildx build --platform linux/amd64,linux/arm64 -f Dockerfile -t ghcr.io/iknowca/kdt-study3:latest --push .
+          docker buildx build --platform linux/amd64,linux/arm64 -f Dockerfile -t ghcr.io/${{ github.actor }}/${{ secrets.DOCKER_PATH }}:latest --push .
           docker logout
+         
   deploy:
     needs: build
     name: Deploy
-    runs-on: [ self-hosted, deploy-frontend]
+    runs-on: [ self-hosted, deploy-frontend ]
     steps:
       - name: Login to ghcr
         uses: docker/login-action@v1
@@ -61,7 +64,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
-          
+         
       - name: Deploy to prod
         uses: appleboy/ssh-action@v0.1.10
         with:
@@ -74,21 +77,12 @@ jobs:
             ls -al
             cd automation_front
             pwd
-            
-            echo ${{ secrets.GHCR_TOKEN}} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
-            docker pull ghcr.io/iknowca/kdt-study3:latest 
-            
+           
+            echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+           
+            docker pull ghcr.io/${{ github.actor }}/${{ secrets.DOCKER_PATH }}:latest
+           
             docker image prune -f
             docker logout
-            
+           
             docker-compose up -d
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
