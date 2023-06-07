@@ -5,7 +5,7 @@ on:
     
     
 env:
-  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/kdt-study3-front
+  DOCKER_IMAGE: ghcr.io/${{ github.repository_owner }}/kdt-study3-front
   VERSION: ${{ github.sha }}
   NAME: frontend-server
   
@@ -46,7 +46,7 @@ jobs:
           
       - name: Docker build $ push to prod
         run: |
-          echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
           docker buildx create --name arm64builder --use
           docker buildx build --platform linux/amd64,linux/arm64 -f Dockerfile -t ghcr.io/iknowca/kdt-study3:latest --push .
           docker logout
@@ -59,7 +59,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GHCR_TOKEN }}
           
       - name: Deploy to prod
