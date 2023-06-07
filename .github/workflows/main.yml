@@ -82,7 +82,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           script_stop: true
           script: |
-            cd acctions-runner-front
+            cd actions-runner-front
             ls -al
             pwd
             cp -r ~/actions-tmp-repo/dist/* ./html/
