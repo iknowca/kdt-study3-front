@@ -83,6 +83,8 @@ jobs:
           script_stop: true
           script: |
             cd automation_front
+            ls -al
+            pwd
             cp -r ~/actions-tmp-repo/dist/* ./html/
 
             docker image prune -f
