@@ -5,19 +5,17 @@
     <v-main>
       <router-view/>
     </v-main>
-    <Footer></Footer>
   </v-app>
 
 </template>
 
 <script>
 
-import Footer from "@/components/layout/Footer.vue";
 import Appbar from "@/components/layout/AppBar.vue";
 
 export default {
   name: 'App',
-  components: {Footer, Appbar},
+  components: { Appbar},
 
   data: () => ({
   }),
